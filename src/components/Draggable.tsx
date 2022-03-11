@@ -1,4 +1,4 @@
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import type { VNode, PropType } from "vue";
 
 import { deepMerge } from "../util/deepMerge";
@@ -15,6 +15,8 @@ function addPropsToVNode(vNode: VNode, props: Record<string, any>): VNode {
  */
 function useDrag({ onDragstart, onDragend }: { onDragstart?: () => void; onDragend?: (vec: [number, number]) => void }) {
   const dragValue = new DragValue()
+  const diffX = ref(dragValue.getDiffX())
+  const diffY = ref(dragValue.getDiffY())
   const handlers = {
     onDragstart: (e: DragEvent) => {
       dragValue.start(e)
@@ -22,6 +24,8 @@ function useDrag({ onDragstart, onDragend }: { onDragstart?: () => void; onDrage
     },
     onDrag: (e: DragEvent) => {
       dragValue.update(e)
+      diffX.value = dragValue.getDiffX()
+      diffY.value = dragValue.getDiffY()
     },
     onDragend: (e: DragEvent) => {
       dragValue.update(e)
@@ -30,8 +34,8 @@ function useDrag({ onDragstart, onDragend }: { onDragstart?: () => void; onDrage
   }
   return {
     handlers,
-    diffX: dragValue.getDiffX(),
-    diffY: dragValue.getDiffY()
+    diffX,
+    diffY
   }
 }
 
@@ -52,8 +56,6 @@ export const Draggable = defineComponent({
       onDragstart: props.onDragstart,
       onDragend: props.onDragend,
     });
-    console.log('diffX', diffX)
-    console.log('diffY', diffY)
     return () => {
       let vNode = ctx.slots.default!()[0];
       vNode = addPropsToVNode(vNode, {
@@ -63,7 +65,7 @@ export const Draggable = defineComponent({
           position: "absolute",
           left: (props.initialPosition?.[0] || 0) + "px",
           top: (props.initialPosition?.[1] || 0) + "px",
-          transform: `translate(${diffX}px, ${diffY}px)`,
+          transform: `translate(${diffX.value}px, ${diffY.value}px)`,
         },
       });
       return vNode;

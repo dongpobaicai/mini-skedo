@@ -18,9 +18,8 @@ export const Render = defineComponent({
     },
   },
   setup({ root }: { root: Node }) {
-    console.log('main render')
     const count = ref(0);
-    root.on([Topics.NodeChildrenUpdated]).subscribe(() => {
+    root.on([Topics.NodeChildrenUpdated, Topics.NodePositionMoved]).subscribe(() => {
       count.value++;
     });
     return () => {
@@ -55,7 +54,7 @@ const Root = ({ node }: SkedoComponent) => {
   return (
     <div data-skedo="root">
       {children.map((node, i) => {
-        return <Render key={i} node={node} />;
+        return <Render key={i} root={node} />;
       })}
     </div>
   );
@@ -70,6 +69,8 @@ const renderItem = (node: Node) => {
         <div
           style={{
             backgroundColor: "yellow",
+            width: node.getW() + 'px',
+            height: node.getH() + 'px'
           }}
         />
       );

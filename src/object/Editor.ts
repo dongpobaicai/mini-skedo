@@ -13,24 +13,22 @@ export class Editor extends StateMachine<States, Actions, Topics> {
     this.root = new Node("root", 0, 0, 800, 800);
 
     this.describeAddComponent();
-    // this.describeDrag();
+    this.describeDrag();
   }
 
-  // private describeDrag() {
-  //   let dragNode: Node;
-  //   this.register(States.Start, States.DragStart, Actions.EvtDragStart, (node: Node) => {
-  //     console.log("node start drag");
-  //     dragNode = node;
-  //   });
+  private describeDrag() {
+    let dragNode: Node;
+    this.register(States.Start, States.DragStart, Actions.EvtDragStart, (node: Node) => {
+      dragNode = node;
+    });
 
-  //   this.register(States.DragStart, States.Stoped, Actions.EvtDragEnd, (vec: [number, number]) => {
-  //     dragNode!.setXY(vec);
-  //     dragNode!.emit(Topics.NodePositionMoved);
-  //     console.log("node position moved");
-  //   });
+    this.register(States.DragStart, States.Stoped, Actions.EvtDragEnd, (vec: [number, number]) => {
+      dragNode!.setXY(vec);
+      dragNode!.emit(Topics.NodePositionMoved);
+    });
 
-  //   this.register(States.Stoped, States.Start, Actions.AUTO, () => {});
-  // }
+    this.register(States.Stoped, States.Start, Actions.AUTO, () => {});
+  }
 
   /**
    * 描述添加组件过程
