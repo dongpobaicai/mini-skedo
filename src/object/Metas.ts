@@ -1,5 +1,14 @@
 export default  [
 	{
+		group: '章节',
+		icon: '',
+		children: [{
+			title: '',
+			type: '',
+			default: ''
+		}]
+	},
+	{
 		title : "图片",
 		type : "image",
 		default : "",

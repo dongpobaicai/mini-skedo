@@ -12,6 +12,7 @@
     "immutable": "4.0.0",
     "less": "4.1.2",
     "rxjs": "7.5.4",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue": "3.2.25"
   },
   "devDependencies": {
