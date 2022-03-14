@@ -11,7 +11,7 @@ export default defineConfig({
     vue(),
     vueJSX(),
     createSvgIconsPlugin({
-      iconDirs: [resolve((process as any).cmd(), "src/icons/svg")],
+      iconDirs: [resolve(process.cwd(), "src/icons/svg")],
       symbolId: "icon-[dir]-[name]",
     }),
   ],

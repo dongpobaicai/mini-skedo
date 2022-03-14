@@ -6,6 +6,8 @@ import { Actions } from "../object/editor.types";
 import { Topics } from "../object/Topics";
 import { Draggable } from "./Draggable";
 
+import classes from "./drag-drop.module.less";
+
 type SkedoComponent = {
   node: Node;
 };
@@ -23,7 +25,7 @@ export const Render = defineComponent({
       count.value++;
     });
     return () => {
-      return <Dummy key={count.value} render={() => MainRender(root)} />
+      return <Dummy key={count.value} render={() => MainRender(root)} />;
     };
   },
 });
@@ -35,9 +37,7 @@ function MainRender(node: Node) {
   switch (node.getType()) {
     case "root":
       return <Root node={node} />;
-    case "text":
-    case "rect":
-    case "image":
+    case "article":
       return <ItemRenderForDraggable node={node} />;
     default:
       throw new Error(`unsupported node type:${node.getType()}`);
@@ -52,7 +52,7 @@ function MainRender(node: Node) {
 const Root = ({ node }: SkedoComponent) => {
   const children = node.getChildren();
   return (
-    <div data-skedo="root">
+    <div data-skedo="root" class={classes['root']}>
       {children.map((node, i) => {
         return <Render key={i} root={node} />;
       })}
@@ -62,20 +62,18 @@ const Root = ({ node }: SkedoComponent) => {
 
 const renderItem = (node: Node) => {
   switch (node.getType()) {
-    case "image":
-      return <img src={"https://img.kaikeba.com/a/83541110301202sxpe.png"} />;
-    case "rect":
+    case "article":
       return (
         <div
+          contenteditable="true"
           style={{
-            backgroundColor: "yellow",
-            width: node.getW() + 'px',
-            height: node.getH() + 'px'
+            height: node.getH() + "px",
+            margin: '10px',
+            padding: '10px',
+            border: '1px solid #333'
           }}
         />
       );
-    case "text":
-      return <h2>这里是文本</h2>;
   }
 };
 
@@ -83,7 +81,6 @@ const ItemRenderForDraggable = ({ node }: SkedoComponent) => {
   const editor = inject("editor") as Editor;
   return (
     <Draggable
-      initialPosition={[node.getX(), node.getY()]}
       onDragstart={() => {
         editor.dispatch(Actions.EvtDragStart, node);
       }}

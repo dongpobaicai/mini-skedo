@@ -3,10 +3,11 @@ import classes from "./drag-drop.module.less";
 import ItemList from "./ItemList";
 import { Panel } from './Panel'
 import { Editor } from '../object/Editor'
+import { ComponentsLoader } from "../loader";
 
 export default defineComponent({
   setup() {
-    const editor = new Editor()
+    const editor = new Editor(ComponentsLoader.get())
     provide('editor', editor)
     return () => {
       return (

@@ -1,64 +1,60 @@
 import Emiter from "./Emiter";
 import { Topics } from "./Topics";
-import {Map as ImmutableMap, List} from 'immutable'
+import ComponentMeta from "./ComponentMeta";
+import { Map as ImmutableMap } from "immutable";
 
 /**
  * 利用immutable方便高效操作对象 复制
  */
 export class Node extends Emiter<Topics> {
-  private nodeData: ImmutableMap<string, any>
+  private metaData: ComponentMeta;
+  private nodeData: ImmutableMap<string, any>;
 
   constructor(
-    type: string, // 节点类型
-    x: number, // 坐标
-    y: number,
-    w: number,
-    h: number
+    metaData: ComponentMeta,
+    nodeData?: ImmutableMap<string, any> // 节点类型
   ) {
-    super()
-    this.nodeData = ImmutableMap({
-      type,
-      x,
-      y,
-      w,
-      h,
-      children : List<Node>() 
-    })
+    super();
+    this.metaData = metaData;
+    this.nodeData = nodeData;
   }
 
-  public add(child : Node) {
-    this.nodeData = this.nodeData.update('children', (children: Array<Node>) => {
-      return children.push(child)
-    })
+  public add(child: Node) {
+    this.nodeData = this.nodeData.update("children", (children: Array<Node>) => {
+      children.push(child);
+      return children;
+    });
   }
 
   public getType() {
-		return this.nodeData.get('type')
-	}
+    return this.metaData.name;
+  }
 
-	public getX(){
-		return this.nodeData.get('x')
-	}
+  public getBox() {
+    return this.nodeData.get("box");
+  }
 
-	public getY(){
-		return this.nodeData.get('y')
-	}
+  public getX() {
+    return this.getBox().getLeft();
+  }
 
-	public getW(){
-		return this.nodeData.get('w')
-	}
+  public getY() {
+    return this.getBox().getTop();
+  }
 
-	public getH() {
-		return this.nodeData.get('h')
-	}
+  public getW() {
+    return this.getBox().getW();
+  }
+
+  public getH() {
+    return this.getBox().getH();
+  }
 
   public getChildren() {
-		return this.nodeData.get('children').toJS() as Node[]
-	}
+    return this.nodeData.get("children");
+  }
 
-  public setXY(vec : [number, number]) {
-    this.nodeData = this.nodeData
-      .set("x", vec[0] + this.nodeData.get("x"))
-      .set("y", vec[1] + this.nodeData.get("y"))
+  public setXY(vec: [number, number]) {
+    this.nodeData = this.nodeData.set("left", vec[0] + this.nodeData.get("left")).set("top", vec[1] + this.nodeData.get("top"));
   }
 }

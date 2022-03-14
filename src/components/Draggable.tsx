@@ -62,9 +62,6 @@ export const Draggable = defineComponent({
         ...handlers,
         Draggable: true,
         style: {
-          position: "absolute",
-          left: (props.initialPosition?.[0] || 0) + "px",
-          top: (props.initialPosition?.[1] || 0) + "px",
           transform: `translate(${diffX.value}px, ${diffY.value}px)`,
         },
       });

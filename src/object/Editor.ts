@@ -1,16 +1,28 @@
-import { Actions, Meta, States } from "./editor.types";
+import { Actions, States } from "./editor.types";
 import { Node } from "./Node";
 import StateMachine from "./StateMachine";
 import { Topics } from "./Topics";
-
+import { BoxMeta } from './BoxMeta'
+import ComponentMeta from './ComponentMeta'
+import { ComponentsLoader } from "../loader";
 
 export class Editor extends StateMachine<States, Actions, Topics> {
   private root: Node;
+  private loader: ComponentsLoader;
+  private id_base : number 
 
-  constructor() {
+  constructor(loader: ComponentsLoader) {
     // 设置状态机开始状态
     super(States.Start);
-    this.root = new Node("root", 0, 0, 800, 800);
+    this.loader = loader;
+    const metaData = loader.loadByName("container", "root")
+    const box = new BoxMeta({
+      left : 0,
+      top : 0,
+      width : 3200,
+      height : 3200
+    })
+    this.root = new Node(metaData, metaData.createData(this.createId(), box));
 
     this.describeAddComponent();
     this.describeDrag();
@@ -34,7 +46,7 @@ export class Editor extends StateMachine<States, Actions, Topics> {
    * 描述添加组件过程
    */
   private describeAddComponent() {
-    let componentToPlace: Meta | null = null;
+    let componentToPlace: ComponentMeta | null = null;
     let addVector: [number, number] = [0, 0];
     // Start => StartAddComponent => PlacingComponent
 
@@ -51,7 +63,13 @@ export class Editor extends StateMachine<States, Actions, Topics> {
       if (!componentToPlace) {
         throw new Error("no component to create");
       }
-      const node = new Node(componentToPlace.type, addVector[0] - componentToPlace.w / 2 - 100, addVector[1] - componentToPlace.h / 2, componentToPlace.w, componentToPlace.h);
+      const box = new BoxMeta({
+        left : addVector[0] - 100,
+        top : addVector[1],
+        width : componentToPlace.box.getW(),
+        height : componentToPlace.box.getH()
+      })
+      const node = new Node(componentToPlace, componentToPlace.createData(this.createId(), box));
 
       this.root.add(node);
       this.root.emit(Topics.NodeChildrenUpdated);
@@ -63,5 +81,11 @@ export class Editor extends StateMachine<States, Actions, Topics> {
   }
   public getRoot() {
     return this.root;
+  }
+  public getLoader() {
+    return this.loader;
+  }
+  private createId(){
+    return this.id_base++
   }
 }

@@ -22,3 +22,9 @@ html, body {
 .content {
   margin : 10px;
 }
+
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}

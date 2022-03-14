@@ -1,13 +1,18 @@
+import { ref } from "vue";
+
 import classes from "./drag-drop.module.less";
 
-import metas from "../object/Metas";
 import { Actions } from "../object/editor.types";
 import { Editor } from "../object/Editor";
+import SvgIcon from './SvgIcon'
 
 export default ({ editor }: { editor: Editor }) => {
+  const metas = ref(editor.getLoader().list);
+
   return (
     <div class={classes["item-list"]}>
-      {metas.map((item) => {
+      {metas.value.map((item) => {
+        console.log(item)
         return (
           <div
             draggable={true}
@@ -15,9 +20,10 @@ export default ({ editor }: { editor: Editor }) => {
               editor.dispatch(Actions.StartAddComponent, item);
             }}
             class={classes["item"]}
-            key={item.type}
+            key={item.name}
           >
-            {item.title}
+            <SvgIcon class={classes["item-icon"]} name={item.imageUrl} color="#c477c9" />
+            <span class={classes["item-title"]}>{item.title}</span>
           </div>
         );
       })}

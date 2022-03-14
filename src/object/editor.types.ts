@@ -16,9 +16,3 @@ export enum Actions {
   EvtDragEnd,
   StartAddComponent,
 }
-
-export type Meta = {
-  type : string,
-  w : number,
-  h : number
-}

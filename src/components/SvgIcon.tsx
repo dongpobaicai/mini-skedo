@@ -14,12 +14,16 @@ export default defineComponent({
     color: {
       type: String,
     },
+    className: {
+      type: String
+    }
   },
   setup(props) {
     const symbolId = computed(() => `#${props.prefix}-${props.name}`);
+    const svgClass = computed(() => props.className ? `svg-icon ${props.className}` : 'svg-icon')
     return () => {
       return (
-        <svg aria-hidden={true}>
+        <svg aria-hidden={true} class={svgClass.value}>
           <use href={symbolId.value} fill={props.color} />
         </svg>
       );
