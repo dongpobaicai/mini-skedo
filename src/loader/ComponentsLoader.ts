@@ -32,6 +32,9 @@ export class ComponentsLoader extends Emiter<Topics> {
     window.componentsLoader = ComponentsLoader.inst;
     return ComponentsLoader.inst;
   }
+
+  
+
   // 根据分组和组件名称获取资源
   loadByName(group: string, name: string): ComponentMeta {
     const key = group + "." + name;

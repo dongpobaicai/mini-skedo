@@ -33,6 +33,9 @@ export class Node extends Emiter<Topics> {
   public getBox() {
     return this.nodeData.get("box");
   }
+  public getSelect() {
+    return this.nodeData.get("selected");  
+  }
 
   public getX() {
     return this.getBox().getLeft();
@@ -56,5 +59,8 @@ export class Node extends Emiter<Topics> {
 
   public setXY(vec: [number, number]) {
     this.nodeData = this.nodeData.set("left", vec[0] + this.nodeData.get("left")).set("top", vec[1] + this.nodeData.get("top"));
+  }
+  public setSelect(bool: boolean) {
+    this.nodeData = this.nodeData.set("selected", bool)
   }
 }

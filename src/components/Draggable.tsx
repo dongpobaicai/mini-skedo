@@ -50,6 +50,9 @@ export const Draggable = defineComponent({
     onDragend: {
       type: Function as PropType<(vec: [number, number]) => void>,
     },
+    onClick: {
+      type: Function as PropType<() => void>,
+    }
   },
   setup(props, ctx) {
     const { handlers, diffX, diffY } = useDrag({
@@ -60,6 +63,7 @@ export const Draggable = defineComponent({
       let vNode = ctx.slots.default!()[0];
       vNode = addPropsToVNode(vNode, {
         ...handlers,
+        onClick: props.onClick,
         Draggable: true,
         style: {
           transform: `translate(${diffX.value}px, ${diffY.value}px)`,

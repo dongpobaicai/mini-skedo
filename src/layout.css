@@ -1,3 +1,6 @@
+:root {
+  --el-color-primary: #c477c9;
+}
 html, body {
   height : 100%;
   margin: 0;

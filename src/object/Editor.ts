@@ -8,6 +8,7 @@ import { ComponentsLoader } from "../loader";
 
 export class Editor extends StateMachine<States, Actions, Topics> {
   private root: Node;
+  private curNode: Node;
   private loader: ComponentsLoader;
   private id_base : number 
 
@@ -26,6 +27,7 @@ export class Editor extends StateMachine<States, Actions, Topics> {
 
     this.describeAddComponent();
     this.describeDrag();
+    this.describeSelect();
   }
 
   private describeDrag() {
@@ -79,6 +81,16 @@ export class Editor extends StateMachine<States, Actions, Topics> {
       console.log("auto reset state");
     });
   }
+  private describeSelect() {
+    this.register(States.Start, States.Selected, Actions.SelectedComponent, (node: Node) => {
+      // 设置节点选中状态
+      node.setSelect(true)
+
+      this.curNode = node
+      this.root.emit(Topics.NodeChildrenSelected);
+    })
+    this.register(States.Selected, States.Start, Actions.AUTO, () => {});
+  }
   public getRoot() {
     return this.root;
   }
@@ -87,5 +99,8 @@ export class Editor extends StateMachine<States, Actions, Topics> {
   }
   private createId(){
     return this.id_base++
+  }
+  public getSelectNode(): Node {
+    return this.curNode
   }
 }

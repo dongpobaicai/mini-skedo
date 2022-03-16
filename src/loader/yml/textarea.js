@@ -1,14 +1,16 @@
 export default {
   group: "basic",
-  name: "chart",
-  imageUrl: "chart",
-  title: "图表块",
-  defaultProps: {},
+  name: "textarea",
+  imageUrl: "font",
+  title: "文本框",
+  defaultProps: {
+    text: "请输入文本内容",
+  },
   style: {
     borderWidth: 1,
     backgroundColor: "white",
   },
-  url: "local.chart",
+  url: "local.textarea",
   box : {
     width : 1500,
     height : 300,

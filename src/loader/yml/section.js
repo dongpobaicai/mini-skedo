@@ -1,19 +1,16 @@
 export default {
-  group: "basic",
+  group: "container",
   name: "article",
   imageUrl: "article",
   title: "章节",
-  defaultProps: {
-    text: "点我",
-  },
+  defaultProps: {},
   style: {
     borderWidth: 1,
     backgroundColor: "white",
   },
-  url: "local.Button",
+  url: "local.article",
   box : {
-    width : 1500,
-    height : 300,
+    width : 1500
   },
   editor: {
     groups: [
@@ -28,4 +25,5 @@ export default {
       },
     ],
   },
+  intrinsic: true,
 };

@@ -15,4 +15,5 @@ export enum Actions {
   EvtDrop,
   EvtDragEnd,
   StartAddComponent,
+  SelectedComponent
 }
