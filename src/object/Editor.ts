@@ -97,7 +97,7 @@ export class Editor extends StateMachine<States, Actions, Topics> {
   public getLoader() {
     return this.loader;
   }
-  private createId(){
+  public createId(){
     return this.id_base++
   }
   public getSelectNode(): Node {

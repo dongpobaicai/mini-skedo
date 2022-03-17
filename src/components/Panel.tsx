@@ -18,7 +18,7 @@ export const Panel = ({ editor }: { editor: Editor }) => {
         editor.dispatch(Actions.EvtDrop);
       }}
     >
-      <Render root={editor.getRoot()} />
+      <Render root={editor.getRoot()} editor={editor} />
     </div>
   );
 };
